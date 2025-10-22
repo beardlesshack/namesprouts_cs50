@@ -1,0 +1,269 @@
+/* =========================
+   FONT IMPORTS & DECLARATIONS
+   ========================= */
+
+/* Dancing Script (kept for later tests) */
+@font-face {
+  font-family: 'Dancing Script';
+  src: url('/static/fonts/dancing-script-v24-latin-regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Allura (primary for stem design) */
+@font-face {
+  font-family: 'Allura';
+  src: url('/static/fonts/allura-v23-latin-regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Great Vibes (optional) */
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('/static/fonts/great-vibes-v21-latin-regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Montserrat for navigation */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap');
+
+
+/* =========================
+   GLOBAL / BASE STYLES
+   ========================= */
+:root {
+  --accent: #8a2be2;
+  --accent-dark: #6c1dbf;
+  --muted: #f1e6f1;
+  --bg: #faf9fc;
+  --text: #2f2f2f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--text);
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* =========================
+   NAVIGATION BAR
+   ========================= */
+.navbar {
+  background: #fff;
+  border-bottom: 2px solid var(--muted);
+  padding: 0.8rem 2rem;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.logo {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.8rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 600;
+  transition: color 0.18s ease, transform 0.18s ease;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+  color: var(--accent);
+  transform: translateY(-2px);
+  background: rgba(138,43,226,0.04);
+}
+
+/* Hamburger (hidden on desktop) */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.bar {
+  height: 3px;
+  width: 25px;
+  background-color: #444;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* =========================
+   PREVIEW & DESIGN AREA
+   ========================= */
+
+/* container used on design page to center content */
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 70vh;
+  background-color: var(--bg);
+  padding: 3rem 1rem;
+}
+
+/* title above preview */
+.preview-title {
+  font-family: 'Allura', cursive;
+  font-size: 2.4rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* input and controls */
+.preview-controls {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.preview-controls input[type="text"] {
+  font-size: 1.05rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  width: 260px;
+  text-align: center;
+  outline: none;
+  transition: box-shadow .18s ease, transform .12s ease;
+}
+
+.preview-controls input[type="text"]:focus {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+/* primary button style */
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+/* The visible text preview (Allura, lowercase enforced) */
+.preview-text {
+  font-family: 'Allura', cursive;
+  font-size: 4.4rem;            /* big for testing — adjust as needed */
+  color: var(--text);
+  text-transform: lowercase;    /* enforce lowercase */
+  white-space: nowrap;
+  line-height: 1;
+  margin-top: 1.5rem;
+  transition: transform .25s ease, opacity .25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Slight hover emphasis */
+.preview-text:hover {
+  transform: scale(1.03);
+  color: var(--accent);
+}
+
+/* Utility: rotate the preview to vertical (stem) at display time */
+.stem-vertical {
+  display: inline-block;
+  transform-origin: center bottom;
+  transform: rotate(-90deg); /* rotated 90deg CCW to appear as upward stem */
+}
+
+/* Smaller preview on narrow screens */
+@media (max-width: 520px) {
+  .preview-text { font-size: 2.6rem; }
+  .preview-controls input[type="text"] { width: 180px; }
+}
+
+/* =========================
+   HAMBURGER MENU & RESPONSIVE NAV
+   ========================= */
+
+@media (max-width: 768px) {
+  .menu-toggle { display: flex; }
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #fff;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 1rem 2rem;
+    gap: 1rem;
+    border-top: 2px solid var(--muted);
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+    animation: slideDown 0.3s ease-in-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .menu-toggle.is-active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
+  .menu-toggle.is-active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .preview-text { font-size: 2.5rem; }
+}

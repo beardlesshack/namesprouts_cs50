@@ -63,7 +63,7 @@ def logged_in():
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("design.html")
 
 
 @app.route("/register", methods=["GET", "POST"])

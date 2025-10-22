@@ -1,160 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Design Your Flower | NameSprouts</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #faf8f7;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NameSprouts - Design Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <style>
+        /* Phase 1 test: Font + centered preview */
+        @font-face {
+            font-family: 'Dancing Script';
+            src: url('{{ url_for('static', filename='fonts/DancingScript-Regular.woff2') }}') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
 
-    form {
-      max-width: 400px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f9fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-    canvas {
-      display: block;
-      margin: 1rem auto;
-      background: url('{{ url_for('static', filename='watercolor_bg.jpg') }}') no-repeat center;
-      background-size: cover;
-      border-radius: 12px;
-    }
+        h1 {
+            color: #8a2be2;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .btn {
-      background-color: #e0b7c2;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    .btn:hover {
-      background-color: #d097a6;
-    }
+        input[type="text"] {
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            width: 250px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
 
-  </style>
+        button {
+            background-color: #8a2be2;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #7326b4;
+        }
+
+        #preview {
+            margin-top: 2rem;
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: #333;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-  {% include 'nav.html' %}
+    <h1>Design Your Flower Stem</h1>
 
-  <main>
-    <h2>Design Your Flower</h2>
-
-    <form id="designForm">
-      <label for="name">Enter Name:</label><br>
-      <input type="text" id="name" name="name" required><br><br>
-
-      <label for="month">Choose Birth Month Flower:</label><br>
-      <select id="month" name="month" required>
-        <option value="">Select a month</option>
-        <option value="january">January - Carnation</option>
-        <option value="february">February - Violet</option>
-        <option value="march">March - Daffodil</option>
-        <option value="april">April - Daisy</option>
-        <option value="may">May - Lily of the Valley</option>
-        <option value="june">June - Rose</option>
-        <option value="july">July - Larkspur</option>
-        <option value="august">August - Gladiolus</option>
-        <option value="september">September - Aster</option>
-        <option value="october">October - Marigold</option>
-        <option value="november">November - Chrysanthemum</option>
-        <option value="december">December - Narcissus</option>
-      </select><br><br>
-
-      <button type="button" class="btn" id="previewBtn">Preview Design</button>
+    <form id="nameForm">
+        <input type="text" id="nameInput" placeholder="Enter your name..." />
+        <button type="submit">Preview</button>
     </form>
 
-    <div>
-      <canvas id="flowerCanvas" width="400" height="600"></canvas>
-    </div>
-  </main>
+    <div id="preview"></div>
 
-  <script>
-    const flowerImages = {
-      january: "carnation.png",
-      february: "violet.png",
-      march: "daffodil.png",
-      april: "daisy.png",
-      may: "lily.png",
-      june: "rose.png",
-      july: "larkspur.png",
-      august: "gladiolus.png",
-      september: "aster.png",
-      october: "marigold.png",
-      november: "chrysanthemum.png",
-      december: "narcissus.png"
-    };
+    <script>
+        const form = document.getElementById('nameForm');
+        const input = document.getElementById('nameInput');
+        const preview = document.getElementById('preview');
 
-    const canvas = document.getElementById("flowerCanvas");
-    const ctx = canvas.getContext("2d");
-    const previewBtn = document.getElementById("previewBtn");
-
-    previewBtn.addEventListener("click", () => {
-      const name = document.getElementById("name").value.trim();
-      const month = document.getElementById("month").value;
-
-      if (!name || !month) {
-        alert("Please enter a name and select a month.");
-        return;
-      }
-
-      // Load the flower image
-      const flowerImg = new Image();
-      flowerImg.src = `/static/flowers/${flowerImages[month]}`;
-
-      flowerImg.onload = () => {
-        // Clear and draw watercolor background
-        const bg = new Image();
-        bg.src = `/static/watercolor_bg.jpg`;
-        bg.onload = () => {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-
-          // Draw the flower base (without stem if possible)
-          const flowerHeight = 350;
-          const flowerWidth = 300;
-          const flowerX = (canvas.width - flowerWidth) / 2;
-          const flowerY = canvas.height - flowerHeight - 40;
-          ctx.drawImage(flowerImg, flowerX, flowerY, flowerWidth, flowerHeight);
-
-          // Draw name as a vertical cursive stem
-          ctx.save();
-          ctx.translate(canvas.width / 2, canvas.height - 100);
-          ctx.rotate(-Math.PI / 2);
-
-          ctx.font = "48px 'Great Vibes', cursive";
-          ctx.fillStyle = "#3a2d28";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-
-          // Slight curve effect by offsetting each letter
-          const letterSpacing = 45;
-          for (let i = 0; i < name.length; i++) {
-            const letter = name[i];
-            const x = 0;
-            const y = -i * letterSpacing;
-            const curve = Math.sin(i / 2) * 10;
-            ctx.save();
-            ctx.translate(curve, y);
-            ctx.fillText(letter, x, 0);
-            ctx.restore();
-          }
-
-          ctx.restore();
-        };
-      };
-    });
-  </script>
-
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = input.value.trim();
+            if (name) {
+                preview.textContent = name;
+            } else {
+                preview.textContent = '';
+            }
+        });
+    </script>
 </body>
 </html>
-
