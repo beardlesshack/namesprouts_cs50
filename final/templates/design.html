@@ -3,101 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NameSprouts - Design Page</title>
+    <title>NameSprouts | Design</title>
+
+    <!-- Link to the updated stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-    <style>
-        /* Phase 1 test: Font + centered preview */
-        @font-face {
-            font-family: 'Dancing Script';
-            src: url('{{ url_for('static', filename='fonts/DancingScript-Regular.woff2') }}') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f9f9fc;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        h1 {
-            color: #8a2be2;
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        input[type="text"] {
-            padding: 0.8rem;
-            font-size: 1.2rem;
-            width: 250px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        button {
-            background-color: #8a2be2;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1.1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #7326b4;
-        }
-
-        #preview {
-            margin-top: 2rem;
-            font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            color: #333;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-    </style>
 </head>
+
 <body>
-    <h1>Design Your Flower Stem</h1>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">NameSprouts</a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('design') }}">Design</a></li>
+                <li><a href="{{ url_for('my_projects') }}">My Projects</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <form id="nameForm">
-        <input type="text" id="nameInput" placeholder="Enter your name..." />
-        <button type="submit">Preview</button>
-    </form>
+    <!-- Main Content -->
+    <main class="preview-container">
 
-    <div id="preview"></div>
+        <!-- Preview Section -->
+        <h2 class="preview-title">Preview Your Name Design</h2>
+        <div id="previewArea" class="preview-text">your name</div>
 
+        <!-- Form Section -->
+        <form id="designForm" method="POST" class="form-container">
+            <input type="text" id="nameInput" name="name" placeholder="Enter your name" required>
+
+            <select name="month" id="monthSelect" required>
+                <option value="" disabled selected>Select birth month</option>
+                <option value="january">January</option>
+                <option value="february">February</option>
+                <option value="march">March</option>
+                <option value="april">April</option>
+                <option value="may">May</option>
+                <option value="june">June</option>
+                <option value="july">July</option>
+                <option value="august">August</option>
+                <option value="september">September</option>
+                <option value="october">October</option>
+                <option value="november">November</option>
+                <option value="december">December</option>
+            </select>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button type="button" id="previewButton">Preview</button>
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Live Preview Script -->
     <script>
-        const form = document.getElementById('nameForm');
-        const input = document.getElementById('nameInput');
-        const preview = document.getElementById('preview');
+        document.addEventListener("DOMContentLoaded", function() {
+            const nameInput = document.getElementById("nameInput");
+            const previewText = document.getElementById("previewArea");
+            const previewButton = document.getElementById("previewButton");
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = input.value.trim();
-            if (name) {
-                preview.textContent = name;
-            } else {
-                preview.textContent = '';
-            }
+            // Live typing preview
+            nameInput.addEventListener("input", () => {
+                previewText.textContent = nameInput.value || "your name";
+            });
+
+            // Optional explicit preview button (redundant but keeps UX clear)
+            previewButton.addEventListener("click", () => {
+                previewText.textContent = nameInput.value || "your name";
+                previewText.style.fontFamily = "'Allura', 'Dancing Script', cursive";
+            });
         });
     </script>
 </body>
