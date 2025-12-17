@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}NameSprouts{% endblock %}</title>
+  <title>{% block title %}NameSprouts.com{% endblock %}</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
   <nav>
-    <h1 class="logo">NameSprouts 🌸</h1>
+    <h1 class="logo">NameSprouts.com 🌸</h1>
     <ul>
       {% if session.user_id %}
         <li><a href="{{ url_for('design') }}">Design</a></li>
@@ -27,7 +27,7 @@
   </main>
 
   <footer>
-    <p>© {{ 2025 }} NameSprouts • Bloom Your Name 🌿</p>
+    <p>© {{ 2025 }} NameSprouts.com 🌿</p>
   </footer>
 </body>
 </html>
