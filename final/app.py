@@ -31,7 +31,7 @@ DATABASE = "namesprouts.db"
 csrf = CSRFProtect(app)
 
 # =========================================================
-# TEMPLATE FILTERS (AFTER app EXISTS)
+# TEMPLATE FILTERS
 # =========================================================
 
 @app.template_filter("regex_replace")
@@ -202,6 +202,24 @@ def design():
     return render_template("design.html")
 
 # ---------------- PROJECTS ---------------- #
+
+@app.route("/projects")
+@login_required
+def my_projects():
+    db = get_db()
+
+    projects = db.execute(
+        """
+        SELECT *
+        FROM projects
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        """,
+        (session["user_id"],)
+    ).fetchall()
+
+    return render_template("my_projects.html", projects=projects)
+
 
 @app.route("/edit/<int:project_id>", methods=["GET", "POST"])
 @login_required
