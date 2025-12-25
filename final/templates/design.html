@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-
+<!-- Design Loaded Rev4 -->
 <h1>Create Your Name Flower</h1>
 
 <form method="POST" action="{{ url_for('design') }}">
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
     <label for="nameInput">Name</label>
     <input
@@ -37,22 +37,62 @@
         <button type="button" id="previewButton">Preview</button>
         <button type="submit">Save Project</button>
     </div>
-
 </form>
 
-<!-- PREVIEW AREA -->
+<!-- =========================
+     PREVIEW AREA
+     ========================= -->
 <div class="preview-area" aria-live="polite">
 
     <img
         id="flowerImg"
-        src="/static/flowers/default.png"
+        src="{{ url_for('static', filename='flowers/default.png') }}"
         alt="Flower preview"
+        class="flower-img"
     >
 
+    <!-- STEM LETTER STACK -->
     <div id="stemLetters" class="stem-letters"></div>
 
 </div>
 
+<!-- =========================
+     STEM + PREVIEW STYLES
+     ========================= -->
+<style>
+.preview-area {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stem-letters {
+    display: flex;
+    flex-direction: column-reverse; /* 🔑 bottom → top */
+    align-items: center;
+    margin-top: 10px;
+}
+
+.stem-letter {
+    font-size: 20px;
+    line-height: 1.2;
+    font-family: serif;
+}
+
+.stem-letter.stem-start::before {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 22px;
+    background: #222;
+    margin: 0 auto 2px auto;
+}
+</style>
+
+<!-- =========================
+     PREVIEW LOGIC
+     ========================= -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -63,42 +103,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const stemLetters = document.getElementById("stemLetters");
 
     function updatePreview() {
-
         const rawName = nameInput.value.trim();
-
-        // Reset preview if empty
-        if (!rawName) {
-            stemLetters.innerHTML = "";
-            flowerImg.src = "/static/flowers/default.png";
-            return;
-        }
 
         stemLetters.innerHTML = "";
 
-        // Normalize: letters only for preview
-        const letters = rawName.replace(/[^a-zA-Z]/g, "").split("");
+        if (!rawName) {
+            flowerImg.src = "{{ url_for('static', filename='flowers/default.png') }}";
+            return;
+        }
 
+        // Letters only, natural order
+        const letters = rawName.replace(/[^a-zA-Z]/g, "").split("");
         if (!letters.length) return;
 
-        // Bottom stem letter (lowercase)
-        const bottomSpan = document.createElement("div");
-        bottomSpan.classList.add("stem-letter", "stem-start");
-        bottomSpan.textContent = letters[0].toLowerCase();
-        stemLetters.appendChild(bottomSpan);
-
-        // Remaining letters (bottom → top)
-        letters.slice(1).reverse().forEach(char => {
+        // Insert letters in order
+        letters.forEach((char, index) => {
             const span = document.createElement("div");
             span.classList.add("stem-letter");
-            span.textContent = char;
+
+            // FIRST letter = bottom anchor
+            if (index === 0) {
+                span.classList.add("stem-start");
+                span.textContent = char.toLowerCase();
+            } else {
+                span.textContent = char;
+            }
+
             stemLetters.appendChild(span);
         });
 
-        // Flower image by month
+        // Update flower image
         if (monthSelect.value) {
-            flowerImg.src = `/static/flowers/${monthSelect.value}.png`;
+            flowerImg.src = `{{ url_for('static', filename='flowers') }}/${monthSelect.value}.png`;
             flowerImg.onerror = () => {
-                flowerImg.src = "/static/flowers/default.png";
+                flowerImg.src = "{{ url_for('static', filename='flowers/default.png') }}";
             };
         }
     }
@@ -111,5 +149,3 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 {% endblock %}
-
-
