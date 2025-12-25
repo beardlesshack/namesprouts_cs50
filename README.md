@@ -1,20 +1,23 @@
-#Final cs50 2025 project
-# A website fully automated to capture user
-#inputs and create a downloadable file, using
+# Final cs50 2025 project:
+<br><br>
+# A website fully automated to capture user inputs 
+# and create a downloadable file, using
 # name and flower design.
-
+<br><br>
 # Domain name: namesprouts.com
-
+<br><br>
 # User selects a birthmonth flower and
 # spells the name to be written up the
 # flowers stem.
 
-# first user must sign in and be given 
+# A user must sign up, login and be given 
 # a password and username to access site.
 
-# user designs are saved and can be edited and
-# finally purchased for print.
+# Designs are saved and can be edited and
+# finally purchased for download to print.
+![This is the alt text for screen readers](images/my_image.png "This text appears on hover")
+
 
 # program is designed to take a typical name
-# and display the letters connected toy
-# resembling a flower stem
+# and display the letters connected together
+# resembling a flowers stem.
