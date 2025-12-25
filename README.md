@@ -1,7 +1,7 @@
 # Final cs50 2025 project:
 <br><br>
 # A website fully automated to capture user inputs 
-# and create a downloadable file, using
+# and create a downloadable file using
 # name and flower design.
 <br><br>
 # Domain name: namesprouts.com
@@ -15,9 +15,9 @@
 
 # Designs are saved and can be edited and
 # finally purchased for download to print.
-![This is the alt text for screen readers](images/my_image.png "This text appears on hover")
+![This is the alt text for screen readers](C:\Users\mikas\Desktop\namesprouts.com\vs code build\ns1screenshot.png)
 
 
-# program is designed to take a typical name
+# This program is designed to take a typical name
 # and display the letters connected together
 # resembling a flowers stem.
