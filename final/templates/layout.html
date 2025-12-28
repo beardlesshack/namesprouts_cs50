@@ -1,33 +1,69 @@
 <!DOCTYPE html>
+<!-- Design Loaded Rev4 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}NameSprouts{% endblock %}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <title>{% block title %}NameSprouts.com{% endblock %}</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles.css') }}"
+  >
 </head>
+
 <body>
-  <nav>
-    <h1 class="logo">NameSprouts 🌸</h1>
-    <ul>
-      {% if session.user_id %}
-        <li><a href="{{ url_for('design') }}">Design</a></li>
-        <li><a href="{{ url_for('my_projects') }}">My Projects</a></li>
-        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-      {% else %}
-        <li><a href="{{ url_for('register') }}">Register</a></li>
-        <li><a href="{{ url_for('login') }}">Login</a></li>
-      {% endif %}
-    </ul>
-  </nav>
+
+  <header>
+    <nav aria-label="Main navigation">
+      <h1 class="logo">
+        <a href="{{ url_for('home') }}">NameSprouts.com 🌸</a>
+      </h1>
+
+      <ul>
+        {% if session.user_id %}
+          <li><a href="{{ url_for('design') }}">Design</a></li>
+          <li><a href="{{ url_for('my_projects') }}">My Projects</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('register') }}">Register</a></li>
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
 
   <main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes">
+      {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+
     {% block content %}{% endblock %}
+
   </main>
 
   <footer>
-    <p>© {{ 2025 }} NameSprouts • Bloom Your Name 🌿</p>
+    <p>
+      © {{ 2025 }} NameSprouts.com 🌿
+
+    </p>
   </footer>
+
 </body>
 </html>
+
+

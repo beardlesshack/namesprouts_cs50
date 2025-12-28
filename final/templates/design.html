@@ -1,160 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Design Your Flower | NameSprouts</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #faf8f7;
-      text-align: center;
-    }
+{% extends "layout.html" %}
+{% block content %}
+<!-- Design Loaded Rev4 -->
+<h1>Create Your Name Flower</h1>
 
-    form {
-      max-width: 400px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
+<form method="POST" action="{{ url_for('design') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-    canvas {
-      display: block;
-      margin: 1rem auto;
-      background: url('{{ url_for('static', filename='watercolor_bg.jpg') }}') no-repeat center;
-      background-size: cover;
-      border-radius: 12px;
-    }
+    <label for="nameInput">Name</label>
+    <input
+        type="text"
+        id="nameInput"
+        name="name"
+        placeholder="Enter a name"
+        required
+        autocomplete="off"
+    >
 
-    .btn {
-      background-color: #e0b7c2;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+    <label for="monthSelect">Birth Month</label>
+    <select id="monthSelect" name="month" required>
+        <option value="">Select month</option>
+        <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option>
+        <option value="may">May</option>
+        <option value="june">June</option>
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option value="october">October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
+    </select>
 
-    .btn:hover {
-      background-color: #d097a6;
-    }
-
-  </style>
-</head>
-<body>
-  {% include 'nav.html' %}
-
-  <main>
-    <h2>Design Your Flower</h2>
-
-    <form id="designForm">
-      <label for="name">Enter Name:</label><br>
-      <input type="text" id="name" name="name" required><br><br>
-
-      <label for="month">Choose Birth Month Flower:</label><br>
-      <select id="month" name="month" required>
-        <option value="">Select a month</option>
-        <option value="january">January - Carnation</option>
-        <option value="february">February - Violet</option>
-        <option value="march">March - Daffodil</option>
-        <option value="april">April - Daisy</option>
-        <option value="may">May - Lily of the Valley</option>
-        <option value="june">June - Rose</option>
-        <option value="july">July - Larkspur</option>
-        <option value="august">August - Gladiolus</option>
-        <option value="september">September - Aster</option>
-        <option value="october">October - Marigold</option>
-        <option value="november">November - Chrysanthemum</option>
-        <option value="december">December - Narcissus</option>
-      </select><br><br>
-
-      <button type="button" class="btn" id="previewBtn">Preview Design</button>
-    </form>
-
-    <div>
-      <canvas id="flowerCanvas" width="400" height="600"></canvas>
+    <div class="preview-controls">
+        <button type="button" id="previewButton">Preview</button>
+        <button type="submit">Save Project</button>
     </div>
-  </main>
+</form>
 
-  <script>
-    const flowerImages = {
-      january: "carnation.png",
-      february: "violet.png",
-      march: "daffodil.png",
-      april: "daisy.png",
-      may: "lily.png",
-      june: "rose.png",
-      july: "larkspur.png",
-      august: "gladiolus.png",
-      september: "aster.png",
-      october: "marigold.png",
-      november: "chrysanthemum.png",
-      december: "narcissus.png"
-    };
+<!-- =========================
+     PREVIEW AREA
+     ========================= -->
+<div class="preview-area" aria-live="polite">
 
-    const canvas = document.getElementById("flowerCanvas");
-    const ctx = canvas.getContext("2d");
-    const previewBtn = document.getElementById("previewBtn");
+    <img
+        id="flowerImg"
+        src="{{ url_for('static', filename='flowers/default.png') }}"
+        alt="Flower preview"
+        class="flower-img"
+    >
 
-    previewBtn.addEventListener("click", () => {
-      const name = document.getElementById("name").value.trim();
-      const month = document.getElementById("month").value;
+    <!-- STEM LETTER STACK -->
+    <div id="stemLetters" class="stem-letters"></div>
 
-      if (!name || !month) {
-        alert("Please enter a name and select a month.");
-        return;
-      }
+</div>
 
-      // Load the flower image
-      const flowerImg = new Image();
-      flowerImg.src = `/static/flowers/${flowerImages[month]}`;
+<!-- =========================
+     STEM + PREVIEW STYLES
+     ========================= -->
+<style>
+.preview-area {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-      flowerImg.onload = () => {
-        // Clear and draw watercolor background
-        const bg = new Image();
-        bg.src = `/static/watercolor_bg.jpg`;
-        bg.onload = () => {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+.stem-letters {
+    display: flex;
+    flex-direction: column-reverse; /* 🔑 bottom → top */
+    align-items: center;
+    margin-top: 10px;
+}
 
-          // Draw the flower base (without stem if possible)
-          const flowerHeight = 350;
-          const flowerWidth = 300;
-          const flowerX = (canvas.width - flowerWidth) / 2;
-          const flowerY = canvas.height - flowerHeight - 40;
-          ctx.drawImage(flowerImg, flowerX, flowerY, flowerWidth, flowerHeight);
+.stem-letter {
+    font-size: 20px;
+    line-height: 1.2;
+    font-family: serif;
+}
 
-          // Draw name as a vertical cursive stem
-          ctx.save();
-          ctx.translate(canvas.width / 2, canvas.height - 100);
-          ctx.rotate(-Math.PI / 2);
+.stem-letter.stem-start::before {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 22px;
+    background: #222;
+    margin: 0 auto 2px auto;
+}
+</style>
 
-          ctx.font = "48px 'Great Vibes', cursive";
-          ctx.fillStyle = "#3a2d28";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
+<!-- =========================
+     PREVIEW LOGIC
+     ========================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-          // Slight curve effect by offsetting each letter
-          const letterSpacing = 45;
-          for (let i = 0; i < name.length; i++) {
-            const letter = name[i];
-            const x = 0;
-            const y = -i * letterSpacing;
-            const curve = Math.sin(i / 2) * 10;
-            ctx.save();
-            ctx.translate(curve, y);
-            ctx.fillText(letter, x, 0);
-            ctx.restore();
-          }
+    const nameInput = document.getElementById("nameInput");
+    const monthSelect = document.getElementById("monthSelect");
+    const previewButton = document.getElementById("previewButton");
+    const flowerImg = document.getElementById("flowerImg");
+    const stemLetters = document.getElementById("stemLetters");
 
-          ctx.restore();
-        };
-      };
-    });
-  </script>
+    function updatePreview() {
+        const rawName = nameInput.value.trim();
 
-</body>
-</html>
+        stemLetters.innerHTML = "";
 
+        if (!rawName) {
+            flowerImg.src = "{{ url_for('static', filename='flowers/default.png') }}";
+            return;
+        }
+
+        // Letters only, natural order
+        const letters = rawName.replace(/[^a-zA-Z]/g, "").split("");
+        if (!letters.length) return;
+
+        // Insert letters in order
+        letters.forEach((char, index) => {
+            const span = document.createElement("div");
+            span.classList.add("stem-letter");
+
+            // FIRST letter = bottom anchor
+            if (index === 0) {
+                span.classList.add("stem-start");
+                span.textContent = char.toLowerCase();
+            } else {
+                span.textContent = char;
+            }
+
+            stemLetters.appendChild(span);
+        });
+
+        // Update flower image
+        if (monthSelect.value) {
+            flowerImg.src = `{{ url_for('static', filename='flowers') }}/${monthSelect.value}.png`;
+            flowerImg.onerror = () => {
+                flowerImg.src = "{{ url_for('static', filename='flowers/default.png') }}";
+            };
+        }
+    }
+
+    nameInput.addEventListener("input", updatePreview);
+    monthSelect.addEventListener("change", updatePreview);
+    previewButton.addEventListener("click", updatePreview);
+
+});
+</script>
+
+{% endblock %}

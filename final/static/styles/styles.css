@@ -1,0 +1,263 @@
+/* =========================================================
+   FONT IMPORTS
+   ========================================================= */
+
+@font-face {
+  font-family: 'Dancing Script';
+  src: url('../fonts/DancingScript-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Allura';
+  src: url('../fonts/Allura-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('../fonts/GreatVibes-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  background-color: #fdfcfb;
+  background-image: url('../images/watercolor-paper-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Soft watercolor glow overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.25;
+  background: radial-gradient(
+    rgba(255,255,255,0.4) 10%,
+    transparent 70%
+  );
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+header nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background: #fffafc;
+  border-bottom: 2px solid #f2e8f6;
+}
+
+.logo a {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.8rem;
+  color: #8a2be2;
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+nav ul a:hover {
+  color: #8a2be2;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+main {
+  flex: 1;
+}
+
+
+/* =========================================================
+   DESIGN / PREVIEW CONTAINER
+   ========================================================= */
+
+.preview-area,
+.design-container {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 800px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  border-radius: 2rem;
+  background: linear-gradient(
+    180deg,
+    rgba(250,249,252,0.95),
+    #ffffff
+  );
+  box-shadow: 0 4px 25px rgba(200,180,255,0.15);
+}
+
+
+/* =========================================================
+   FLOWER STEM PREVIEW
+   ========================================================= */
+
+.preview-wrapper {
+  position: relative;
+  width: 220px;
+  margin: 2rem auto;
+  padding-top: 30px;
+}
+
+.flower-img {
+  width: 180px;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.stem-letters {
+  position: absolute;
+  top: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  z-index: 1;
+}
+
+.stem-letter {
+  font-family: 'Dancing Script', cursive;
+  font-size: 32px;
+  line-height: 26px;
+  letter-spacing: -2px;
+  color: #222;
+}
+
+.stem-letter.stem-start::before {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 28px;
+  background: #222;
+  margin: 0 auto 2px auto;
+  border-radius: 2px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+select {
+  width: 240px;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.preview-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+button {
+  background: #8a2be2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #7026b9;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .stem-letter {
+    font-size: 26px;
+    line-height: 22px;
+  }
+
+  .flower-img {
+    width: 150px;
+  }
+
+  header nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+
+

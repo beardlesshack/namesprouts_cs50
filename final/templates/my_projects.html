@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}My Projects | NameSprouts{% endblock %}
+
 {% block content %}
 
 <section class="projects">
@@ -7,22 +8,82 @@
 
   {% if projects %}
     <ul class="project-list">
+
       {% for project in projects %}
-        <li>
-          <div class="project-card">
-            <img src="{{ project['flower_image'] }}" alt="Flower for {{ project['month'] }}">
-            <div class="project-info">
-              <h3>{{ project['name_text'] }}</h3>
-              <p><strong>{{ project['month']|capitalize }}</strong></p>
-              <p>Created on {{ project['created_at'] }}</p>
+      <li>
+        <div class="project-card">
+
+          <!-- =========================
+               FLOWER + STEM PREVIEW
+               ========================= -->
+          <div class="preview-wrapper">
+           <img src="{{ url_for('static', filename=project['flower_image'].replace('static/', '')) }}"
+              alt="Flower for {{ project['month']|capitalize }}"
+              class="flower-img"
+            >
+
+            <div class="stem-letters">
+              {% set raw_name = project['name_text'] %}
+              {% set name = raw_name | regex_replace('[^a-zA-Z]', '') %}
+
+              {% if name|length > 0 %}
+
+                <!-- Bottom stem letter -->
+                <div class="stem-letter stem-start">
+                  {{ name[0]|lower }}
+                </div>
+
+                <!-- Remaining letters bottom → top -->
+                {% for char in name[1:]|reverse %}
+                  <div class="stem-letter">
+                    {{ char }}
+                  </div>
+                {% endfor %}
+
+              {% endif %}
             </div>
           </div>
-        </li>
+
+          <!-- =========================
+               PROJECT INFO + ACTIONS
+               ========================= -->
+          <div class="project-info">
+            <p><strong>{{ project['month']|capitalize }}</strong></p>
+
+            <p class="created-at">
+              Created on {{ project['created_at'][:10] }}
+            </p>
+
+            <div class="button-row">
+              <a href="{{ url_for('edit_project', project_id=project.id) }}">
+                <button type="button">Edit</button>
+              </a>
+
+              <form
+                method="POST"
+                action="{{ url_for('delete_project', project_id=project.id) }}"
+                onsubmit="return confirm('Delete this project?');"
+              >
+	{{ csrf_token() }}
+                <button type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </li>
       {% endfor %}
+
     </ul>
+
   {% else %}
-    <p>You don’t have any saved designs yet. Start <a href="{{ url_for('design') }}">designing</a>!</p>
+    <p>
+      You don’t have any saved designs yet.
+      Start <a href="{{ url_for('design') }}">designing</a>!
+    </p>
   {% endif %}
 </section>
 
 {% endblock %}
+
+

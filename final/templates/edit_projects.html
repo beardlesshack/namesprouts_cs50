@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit Project{% endblock %}
+
+{% block content %}
+<div class="design-container">
+  <h2 class="preview-title">Edit Your Design</h2>
+
+  <form method="POST">
+    <!-- CSRF token  -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label>Name</label>
+    <input
+      type="text"
+      name="name"
+      value="{{ project.name_text }}"
+      required
+    >
+
+    <label>Month</label>
+    <select name="month" required>
+      {% for m in [
+        'january','february','march','april','may','june',
+        'july','august','september','october','november','december'
+      ] %}
+        <option value="{{ m }}" {% if m == project.month %}selected{% endif %}>
+          {{ m|capitalize }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <div class="button-row">
+      <button type="submit">Save Changes</button>
+      <a href="{{ url_for('my_projects') }}">
+        <button type="button">Cancel</button>
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+

@@ -1,9 +1,7 @@
-<!-- templates/nav.html -->
 <nav class="navbar">
   <div class="nav-container">
-    <a href="{{ url_for('index') }}" class="logo">NameSprouts 🌸</a>
+    <a href="{{ url_for('home') }}" class="logo">NameSprouts 🌸</a>
 
-    <!-- Hamburger icon -->
     <div class="menu-toggle" id="mobile-menu">
       <span class="bar"></span>
       <span class="bar"></span>
@@ -11,12 +9,11 @@
     </div>
 
     <ul class="nav-links" id="nav-links">
-      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
       <li><a href="{{ url_for('design') }}">Design</a></li>
-      <li><a href="{{ url_for('payments') }}">Order</a></li>
-      <li><a href="{{ url_for('about') }}">About</a></li>
+
       {% if session.get("user_id") %}
-        <li><a href="{{ url_for('dashboard') }}">My Projects</a></li>
+        <li><a href="{{ url_for('my_projects') }}">My Projects</a></li>
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
       {% else %}
         <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -26,15 +23,4 @@
   </div>
 </nav>
 
-<script>
-  // Mobile menu toggle
-  document.addEventListener("DOMContentLoaded", () => {
-    const menu = document.getElementById("mobile-menu");
-    const navLinks = document.getElementById("nav-links");
 
-    menu.addEventListener("click", () => {
-      menu.classList.toggle("is-active");
-      navLinks.classList.toggle("active");
-    });
-  });
-</script>

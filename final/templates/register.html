@@ -5,6 +5,7 @@
 <div class="form-section">
   <h2>Create Your Account</h2>
   <form method="POST" action="{{ url_for('register') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required>
 
