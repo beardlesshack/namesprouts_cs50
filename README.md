@@ -20,4 +20,4 @@
 
 # This program is designed to take a typical name
 # and display the letters connected together
-# resembling a flowers stem.
+# resembling a flowers stem..
